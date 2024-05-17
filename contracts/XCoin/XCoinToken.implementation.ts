@@ -41,21 +41,21 @@ export default class XCoinToken implements IXCoinToken {
     const latestBlock = await this.web3.eth.getBlock('latest');
     const baseFeePerGas = Number(latestBlock.baseFeePerGas);
 
-const maxPriorityFeePerGas = this.web3.utils.toWei('2', 'gwei'); // Adjust as needed
-const maxFeePerGas = Number(baseFeePerGas) + parseInt(maxPriorityFeePerGas);
+    const maxPriorityFeePerGas = this.web3.utils.toWei('2', 'gwei'); // Adjust as needed
+    const maxFeePerGas = Number(baseFeePerGas) + parseInt(maxPriorityFeePerGas);
 
-const signedTx = await this.web3.eth.accounts.signTransaction(
-  {
-    data: encodedABI,
-    from: from.address,
-    gas: 91000,
-    gasPrice: undefined, // Set to null when using EIP-1559
-    maxFeePerGas: maxFeePerGas,
-    maxPriorityFeePerGas: maxPriorityFeePerGas,
-    to: this.contract.options.address,
-  },
-  from.privateKey
-);
+    const signedTx = await this.web3.eth.accounts.signTransaction(
+      {
+        data: encodedABI,
+        from: from.address,
+        gas: 91000,
+        gasPrice: undefined, // Set to null when using EIP-1559
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas,
+        to: this.contract.options.address,
+      },
+      from.privateKey
+    );
 
     return this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
   }
